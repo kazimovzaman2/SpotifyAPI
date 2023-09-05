@@ -11,5 +11,7 @@ RUN pip install -r requirements.txt
 WORKDIR /code
 COPY . /code
 
+EXPOSE 80
+
 # Run the production server
-CMD newrelic-admin run-program gunicorn --bind 0.0.0.0:8000 --access-logfile - spotify_api.wsgi:application
+CMD newrelic-admin run-program gunicorn --bind 0.0.0.0:80 --access-logfile - spotify_api.wsgi:application
