@@ -1,4 +1,6 @@
 import os
+import dj_database_url
+from decouple import config
 from .common import Common
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -18,6 +20,13 @@ class Local(Common):
         '--with-progressive',
         '--cover-package=spotify_api'
     ]
+
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=f'postgres://{config("DB_USERNAME")}:{config("POSTGRES_PASSWORD")}@{config("DB_HOST")}:{config("DB_PORT")}/{config("DB_NAME")}',
+            conn_max_age=int(os.getenv('POSTGRES_CONN_MAX_AGE', 600))
+        )
+    }
 
     # Mail
     EMAIL_HOST = 'localhost'
