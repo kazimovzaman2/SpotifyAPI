@@ -4,7 +4,6 @@ import os
 import sys
 from decouple import config
 
-
 def main():
     environment = config('DJANGO_CONFIGURATION', default='Local')
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "spotify_api.config")
