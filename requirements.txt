@@ -24,7 +24,6 @@ drf-spectacular==0.26.4
 
 # Developer Tools
 ipdb==0.13.13
-ipython==8.13.2
 mkdocs==1.4.3
 flake8==6.0.0
 

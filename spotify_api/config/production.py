@@ -10,6 +10,14 @@ class Production(Common):
     ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', cast=Csv())
     ADMIN_URL = config('DJANGO_ADMIN_URL')
 
+    # Database
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL'),
+            conn_max_age=int(os.getenv('POSTGRES_CONN_MAX_AGE', 600))
+        )
+    }
+
     # Site
     # https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts
     ALLOWED_HOSTS = ["*"]
