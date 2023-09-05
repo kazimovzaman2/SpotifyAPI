@@ -15,6 +15,7 @@ class SingerAPIViewSet(ModelViewSet):
 
     queryset = Singer.objects.all()
     permission_classes = (AllowAny,)
+    pagination_class = None
 
     def get_serializer_class(self):
         if self.request.method in frozenset(['POST']):
@@ -50,6 +51,7 @@ class SongAPIViewSet(ModelViewSet):
     queryset = Song.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = SongSerializer
+    pagination_class = None
 
     def get_permissions(self):
         if self.action in {"list", "retrieve"}:

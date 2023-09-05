@@ -31,7 +31,11 @@ class IsSingerOrAdminUser(BasePermission):
     """
 
     def has_permission(self, request, view):
-        try:
-            return request.user and (request.user.is_staff or request.user.singer)
-        except Singer.DoesNotExist:
-            return False
+        if request.user.is_authenticated:
+            try:
+                return request.user.is_staff or request.user.singer
+            except Singer.DoesNotExist:
+                return False
+        else:
+            # For unauthenticated users, only allow "list" and "retrieve" actions
+            return view.action in ["list", "retrieve"]
