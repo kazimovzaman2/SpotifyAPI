@@ -26,6 +26,9 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
+
+      - name: Install libmagic and update pip
+        run: |
           sudo apt-get install libmagic1
           pip install --upgrade pip
       
