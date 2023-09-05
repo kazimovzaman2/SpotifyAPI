@@ -7,6 +7,8 @@ from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
+from spotify_api.views import health_check
+
 from .users.views import UserViewSet, UserCreateViewSet
 from spotify_api.singer.views import PlaylistAPIViewSet, SingerAPIViewSet, SongAPIViewSet
 
@@ -20,6 +22,7 @@ router.register(r'playlists', PlaylistAPIViewSet)
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
+    path('health/', health_check),
     path('api/v1/', include(router.urls)),
     path('api-token-auth/', views.obtain_auth_token),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
