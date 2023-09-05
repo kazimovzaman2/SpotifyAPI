@@ -1,8 +1,6 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
 
-from spotify_api.singer.validators import validate_file_mimetype
-
 # Create your models here.
 
 class Singer(models.Model):
@@ -27,7 +25,6 @@ class Song(models.Model):
         upload_to='song/audio',
         validators=[
             FileExtensionValidator(['mp3', 'wav', 'm4a', 'mp4', 'ogg', 'flac']),
-            validate_file_mimetype,
         ],
     )
     image = models.ImageField(upload_to='song/image', blank=True)

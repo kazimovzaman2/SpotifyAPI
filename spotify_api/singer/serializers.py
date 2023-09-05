@@ -1,4 +1,5 @@
-from rest_framework.serializers import ModelSerializer
+import os
+from rest_framework.serializers import ModelSerializer, ValidationError
 
 from spotify_api.users.serializers import CreateUserSerializer, UserSerializer
 from spotify_api.singer.models import Playlist, Singer, Song
@@ -51,6 +52,14 @@ class SongSerializer(ModelSerializer):
         model = Song
         fields = ("id", "singer", "title", "audio", "image", "created_at", "updated_at")
         read_only_fields = ("id", "created_at", "updated_at")
+
+    def validate_audio(self, audio):
+        allowed_extensions = ['.mp3', '.wav', '.m4a', '.mp4', '.ogg', '.flac']
+        file_extension = os.path.splitext(audio.name)[1].lower()
+        if file_extension not in allowed_extensions:
+            raise ValidationError(f"File with extension {file_extension} is not allowed.")
+
+        return audio
 
     def create(self, validated_data):
         singer = self.context['request'].user.singer
