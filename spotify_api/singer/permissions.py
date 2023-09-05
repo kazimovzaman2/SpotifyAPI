@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 from spotify_api.singer.models import Singer
 
@@ -9,10 +9,13 @@ class IsSinger(BasePermission):
     message = "You must be a singer to perform this action."
 
     def has_permission(self, request, view):
-        try:
-            return request.user.singer is not None
-        except Singer.DoesNotExist:
-            return False
+        if request.user.is_authenticated:
+            try:
+                return request.user.singer
+            except Singer.DoesNotExist:
+                return False
+        else:
+            return view.action in ["list", "retrieve"]
 
 class IsSingerOwner(BasePermission):
     """Allows access only to singers."""
@@ -27,17 +30,3 @@ class IsSingerOwner(BasePermission):
                 return False
         else:
             return view.action == "retrieve"
-
-class IsSingerOrAdminUser(BasePermission):
-    """
-    Custom permission to allow singers and admin users to perform actions.
-    """
-
-    def has_permission(self, request, view):
-        if request.user.is_authenticated:
-            try:
-                return request.user.is_staff or request.user.singer
-            except Singer.DoesNotExist:
-                return False
-        else:
-            return view.action in ["list", "retrieve"]

@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAdminUser
-from spotify_api.singer.permissions import IsSinger, IsSingerOrAdminUser, IsSingerOwner
+from spotify_api.singer.permissions import IsSinger, IsSingerOwner
 
 from spotify_api.singer.serializers import PlaylistDetailSerializer, PlaylistSerializer, SingerReadUpdateSerializer, SingerCreateSerializer, SongSerializer
 from spotify_api.singer.models import Playlist, Singer, Song
@@ -49,7 +49,6 @@ class SongAPIViewSet(ModelViewSet):
     """Song API View"""
 
     queryset = Song.objects.all()
-    permission_classes = (AllowAny,)
     serializer_class = SongSerializer
     pagination_class = None
 
@@ -57,20 +56,19 @@ class SongAPIViewSet(ModelViewSet):
         if self.action in {"list", "retrieve"}:
             return [AllowAny()]
         else:
-            return [IsSingerOrAdminUser()]
+            return [IsSinger()]
 
 class PlaylistAPIViewSet(ModelViewSet):
     """Playlist API View"""
 
     queryset = Playlist.objects.all()
-    permission_classes = (AllowAny,)
     pagination_class = None
 
     def get_permissions(self):
         if self.action in {"list", "retrieve"}:
             return [AllowAny()]
         else:
-            return [IsSingerOrAdminUser()]
+            return [IsSinger()]
 
     def get_serializer_class(self):
         if self.action == "retrieve":
