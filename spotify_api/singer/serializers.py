@@ -82,3 +82,16 @@ class PlaylistSerializer(ModelSerializer):
         playlist = Playlist.objects.create(singer=singer, **validated_data)
         playlist.songs.set(songs_data)
         return playlist
+
+
+
+class PlaylistDetailSerializer(ModelSerializer):
+    """Serializer for Playlist model"""
+
+    singer = SingerReadUpdateSerializer(read_only=True)
+    songs = SongSerializer(many=True)
+
+    class Meta:
+        model = Playlist
+        fields = "__all__"
+        read_only_fields = ("id", "created_at", "updated_at")

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAdminUser
 from spotify_api.singer.permissions import IsSinger, IsSingerOrAdminUser, IsSingerOwner
 
-from spotify_api.singer.serializers import PlaylistSerializer, SingerReadUpdateSerializer, SingerCreateSerializer, SongSerializer
+from spotify_api.singer.serializers import PlaylistDetailSerializer, PlaylistSerializer, SingerReadUpdateSerializer, SingerCreateSerializer, SongSerializer
 from spotify_api.singer.models import Playlist, Singer, Song
 
 # Create your views here.
@@ -64,7 +64,6 @@ class PlaylistAPIViewSet(ModelViewSet):
 
     queryset = Playlist.objects.all()
     permission_classes = (AllowAny,)
-    serializer_class = PlaylistSerializer
     pagination_class = None
 
     def get_permissions(self):
@@ -72,3 +71,8 @@ class PlaylistAPIViewSet(ModelViewSet):
             return [AllowAny()]
         else:
             return [IsSingerOrAdminUser()]
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return PlaylistDetailSerializer
+        return PlaylistSerializer
