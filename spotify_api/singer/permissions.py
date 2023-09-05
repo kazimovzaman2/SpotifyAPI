@@ -20,10 +20,13 @@ class IsSingerOwner(BasePermission):
     message = "You must be a singer to perform this action."
 
     def has_object_permission(self, request, view, obj):
-        try:
-            return request.user.singer == obj
-        except Singer.DoesNotExist:
-            return False
+        if request.user.is_authenticated:
+            try:
+                return request.user.singer == obj
+            except Singer.DoesNotExist:
+                return False
+        else:
+            return view.action == "retrieve"
 
 class IsSingerOrAdminUser(BasePermission):
     """
@@ -37,5 +40,4 @@ class IsSingerOrAdminUser(BasePermission):
             except Singer.DoesNotExist:
                 return False
         else:
-            # For unauthenticated users, only allow "list" and "retrieve" actions
             return view.action in ["list", "retrieve"]

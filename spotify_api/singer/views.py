@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser
 from spotify_api.singer.permissions import IsSinger, IsSingerOrAdminUser, IsSingerOwner
 
 from spotify_api.singer.serializers import PlaylistSerializer, SingerReadUpdateSerializer, SingerCreateSerializer, SongSerializer
